@@ -17,17 +17,17 @@ const token = {
   },
   docstring: '##',
   enum: 'enum',
-  exportVariable: 'export',
+  exportVariable: '@export',
   extends: 'extends',
   function: 'func',
-  onreadyVariable: 'onready',
+  onreadyVariable: '@onready',
   poolArray: {
     start: '([',
     end: '])'
   },
   signal: 'signal',
   staticFunction: 'static',
-  tool: 'tool',
+  tool: '@tool',
   variable: 'var'
 }
 

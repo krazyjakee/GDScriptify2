@@ -83,6 +83,8 @@ module.exports = file => {
               outputString += `|\`${item.table[0].default}\``
             }
             outputString += `|\n`
+          } else {
+            outputString += `|[${item.name}](#${item.name.toLowerCase()})|||\n`
           }
         })
 
@@ -231,11 +233,8 @@ module.exports = file => {
       }
     }
 
-    outputString += `- Documentation ([GDScriptify](https://github.com/hiulit/GDScriptify)): [MIT License](/LICENSE_GDSCRIPTIFY.txt).\n\n`
+    outputString += `- Documentation ([GDScriptify](https://github.com/krazyjakee/GDScriptify2)): [MIT License](/LICENSE_GDSCRIPTIFY.txt).\n\n`
   }
-
-  outputString +=
-    '---\n\nPowered by [GDScriptify](https://github.com/hiulit/GDScriptify).\n'
 
   let outputFileName = config.readme
     ? 'README.md'

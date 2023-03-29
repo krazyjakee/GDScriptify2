@@ -5,11 +5,11 @@ const token = require('../token')
 module.exports = (section, lines, index) => {
   let line = lines[index]
 
-  if (line.match(/^export/)) {
+  if (line.match(/^@export/)) {
     section.exported = true
   }
 
-  if (line.match(/^onready/)) {
+  if (line.match(/^@onready/)) {
     section.onready = true
   }
 

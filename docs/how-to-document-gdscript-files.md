@@ -16,11 +16,11 @@ You can use [Markdown](https://daringfireball.net/projects/markdown/syntax) to w
 
 ```gdscript
 ## If `true`, particles are being emitted.
-export (bool) var emitting = false setget _set_emitting
+@export (bool) var emitting = false setget _set_emitting
 ## The type of particles:
 ## - `0 (Square)`.
 ## - `1 (Circle)`.
-export (int, "Square", "Circle") var type = 0
+@export (int, "Square", "Circle") var type = 0
 ```
 
 ## Tags

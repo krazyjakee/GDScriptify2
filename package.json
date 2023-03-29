@@ -1,6 +1,6 @@
 {
-  "name": "gdscriptify",
-  "description": "A magical documentation tool for GDScript.",
+  "name": "gdscriptify2",
+  "description": "A magical documentation tool for GDScript 2.0.",
   "version": "1.1.0",
   "main": "src/index.js",
   "keywords": [
@@ -14,12 +14,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hiulit/GDScriptify.git"
+    "url": "https://github.com/krazyjakee/GDScriptify2.git"
   },
-  "bugs": "https://github.com/hiulit/GDScriptify/issues",
-  "author": "hiulit",
+  "bugs": "https://github.com/krazyjakee/GDScriptify2/issues",
+  "author": "krazyjakee",
   "license": "MIT",
   "bin": {
-    "gdscriptify": "bin/gdscriptify"
+    "gdscriptify2": "bin/gdscriptify2"
   }
 }

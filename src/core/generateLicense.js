@@ -10,11 +10,11 @@ module.exports = () => {
       ? `${creationYear} - ${currentYear}`
       : `${creationYear}`
   let LicenseText = `
-This documentation uses GDScriptify, available under the following license:
+This documentation uses GDScriptify2, available under the following license:
 
 MIT License
 
-Copyright (c) ${yearsText} hiulit
+Copyright (c) ${yearsText} krazyjakee
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
