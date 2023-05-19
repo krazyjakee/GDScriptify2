@@ -66,6 +66,9 @@ module.exports = (section, lines, index) => {
 
       while (lines[lineIndex].slice(sliceNumber) !== endToken) {
         lineIndex += 1
+        if (!lines[lineIndex]) {
+          break
+        }
         row.default += `${lines[lineIndex].trim()}`
         continue
       }
