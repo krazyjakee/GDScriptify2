@@ -32,7 +32,7 @@ module.exports = files => {
 }
 
 const getContainingFolder = (file) => {
-  const splitString = file.path.split("\\")
+  const splitString = file.path.split(path.join("a", "b").split("")[1])
   return splitString[splitString.length - 2]
 }
 
