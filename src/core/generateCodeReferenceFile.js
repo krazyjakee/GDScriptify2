@@ -2,7 +2,6 @@ const config = require('../config')
 const error = require('../utils/error')
 const fs = require('fs')
 const generateIndexFile = require('./generateIndexFile')
-const generateLicense = require('./generateLicense')
 const generateMarkdownFile = require('./generateMarkdownFile')
 const getAllFiles = require('./getAllFiles')
 const mkdirpSync = require('../utils/mkdirpSync')
@@ -103,10 +102,7 @@ module.exports = () => {
         generateMarkdownFile(codeReference.classes[index])
         generatedMarkdownFiles++
 
-        indexFiles.push({
-          name: codeReference.classes[index].name,
-          path: codeReference.classes[index].path
-        })
+        indexFiles.push(codeReference.classes[index])
       }
 
       generateIndexFile(indexFiles)
@@ -132,6 +128,4 @@ The documentation files can be found in '${config.outputDir}'.
       JSON.stringify(codeReference, null, 2)
     )
   }
-
-  generateLicense()
 }
