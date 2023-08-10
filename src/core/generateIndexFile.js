@@ -51,57 +51,20 @@ const getContainingFolder = (file) => {
 
 const buildCard = (file) => {
   var contents = generateMarkdownFile(file)
-  var icon = ""
-
-  if (file.icon) {
-    file.icon = file.icon.replace('res://', '')
-
-    let iconPath = path.dirname(file.icon).split(path.sep)
-    let iconBaseName = path.basename(file.icon)
-    let iconPathArray = []
-
-    for (let index = 0; index < iconPath.length; index++) {
-      const element = iconPath[index]
-      if (!config.projectDir.split(path.sep).includes(element)) {
-        iconPathArray.push(element)
-      }
-    }
-
-    icon = `![icon](${path.join(
-      iconPathArray.join(path.sep),
-      iconBaseName
-    )})`
-  }
 
   var cleanFileName = cleanUpFileName(file.name)
+  const icon_text = getIcon(file)
+  if (icon_text) {
+    icon_store[cleanFileName] = icon_text
+  }
 
   return `## [ICON_${cleanFileName}] ${cleanFileName}\n${contents}`
 }
 
 const addIcon = (file) => {
   if (file.icon) {
-    file.icon = file.icon.replace('res://', '')
-
-    let iconPath = path.dirname(file.icon).split(path.sep)
-    let iconBaseName = path.basename(file.icon)
-    let iconPathArray = []
-
-    for (let index = 0; index < iconPath.length; index++) {
-      const element = iconPath[index]
-      if (!config.projectDir.split(path.sep).includes(element)) {
-        iconPathArray.push(element)
-      }
-    }
-    
-    const icon_text = `![icon](${path.join(
-      iconPathArray.join(path.sep),
-      iconBaseName
-      )})`
-    
     const cleanFileName = cleanUpFileName(file.name)
-    icon_store[cleanFileName] = icon_text
-
-    return icon_text
+    return icon_store[cleanFileName]
   } else if (file.name.includes("extends")) {
     const splitString  = file.name.split("extends")
     const extention = splitString[1].trim()
@@ -111,6 +74,17 @@ const addIcon = (file) => {
     }
   }
 
+  return ""
+}
+
+const getIcon = (file) => {
+  if (file.icon) {
+    const iconPath = file.icon.replace('res://', '')
+    const iconPathArray = iconPath.split("/").filter((item) => item !== "..")
+    
+    const icon_text = `![icon](/${iconPathArray.join("/")})`
+    return icon_text
+  }
   return ""
 }
 

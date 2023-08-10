@@ -52,11 +52,7 @@ module.exports = file => {
         iconPathArray.push(element)
       }
     }
-
-    outputString += `**Icon**: ![icon](${path.join(
-      iconPathArray.join(path.sep),
-      iconBaseName
-    )})\n\n`
+    outputString += `**Icon**: ![icon](${getIcon(file)})\n\n`
   }
 
   if (!Object.values(file.sections).every(section => section.length === 0)) {
@@ -236,4 +232,15 @@ module.exports = file => {
   }
 
   return outputString;
+}
+
+const getIcon = (file) => {
+  if (file.icon) {
+    const iconPath = file.icon.replace('res://', '')
+    const iconPathArray = iconPath.split("/").filter((item) => item !== "..")
+    
+    const icon_text = `![icon](/${iconPathArray.join("/")})`
+    return icon_text
+  }
+  return ""
 }
