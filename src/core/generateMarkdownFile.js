@@ -52,7 +52,7 @@ module.exports = file => {
         iconPathArray.push(element)
       }
     }
-    outputString += `**Icon**: ![icon](${getIcon(file)})\n\n`
+    outputString += `**Icon**: ${getIcon(file)}\n\n`
   }
 
   if (!Object.values(file.sections).every(section => section.length === 0)) {
