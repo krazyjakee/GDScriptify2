@@ -4,6 +4,7 @@ const regex = {
     linkImg: /@link_img\s{([^}]+)}/,
     linkName: /@link_name\s{([^}]+)}/
   },
+  icon: /(?<=@icon\(\")(.*)(?=\"\))/,
   class: {
     name: /class\s(\w+)/
   },
@@ -11,7 +12,7 @@ const regex = {
   constant: {
     name: /const\s(\w+)/
   },
-  default: /(?<==[\s|\S]).*?(?=\ssetget|$)/,
+  default: /(?<==[\s\S]).*?(?=\:\s|$)/,
   enum: {
     name: /enum\s(\w+)/,
     values: /\{([^\}]+)\}/
@@ -31,14 +32,15 @@ const regex = {
   markdown: {
     list: /^(\-|\*|\+|\d+\.)/
   },
-  parameters: /\(([^\)]+)\)/,
+  parameters: /(?<=@\w)\(([^\)]+)\)/,
   signal: {
     name: /signal\s(\w+)/
   },
   type: /:([\s|\S][^\s]+)/,
   variable: {
     name: /var\s(\w+)/,
-    setget: /setget(.*)/
+    set: /(?<=set\s\=\s)(.*)(?=$|\:)/,
+    get: /(?<=get\s\=\s)(.*)(?=$|\:)/
   }
 }
 

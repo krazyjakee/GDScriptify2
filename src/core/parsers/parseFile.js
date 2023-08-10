@@ -178,6 +178,10 @@ module.exports = filePath => {
           table: []
         }
 
+        if (lines[index].split(' ')[0].includes("@icon")) {
+          file.icon = lines[index].match(regex.icon).pop()
+        }
+        
         switch (lines[index].split(' ')[0]) {
           case token.tool:
             file.tool = true
@@ -190,10 +194,6 @@ module.exports = filePath => {
               .split(',')
 
             file.name = properties[0].trim()
-
-            if (properties[1]) {
-              file.icon = properties[1].replace(/"/g, '').trim()
-            }
 
             break
           case token.extends:
@@ -259,10 +259,6 @@ module.exports = filePath => {
                   .split(',')
 
                 file.name = properties[0].trim()
-
-                if (properties[1]) {
-                  file.icon = properties[1].replace(/"/g, '').trim()
-                }
 
                 file.description = section.description
 

@@ -1,6 +1,10 @@
 const config = require('../config')
 const fs = require('fs')
 const path = require('path')
+const mkdirpSync = require('../utils/mkdirpSync')
+const generateMarkdownFile = require('./generateMarkdownFile')
+
+let icon_store = {}
 
 module.exports = files => {
   let outputString = `# Index\n\n`
@@ -17,16 +21,25 @@ module.exports = files => {
   });
 
   for (const key in sections) {
-    outputString += `## ${titleCase(key)}\n\n`;
+    outputString += `# ${titleCase(key)}\n\n`;
 
     sections[key].forEach(file => {
       outputString += buildCard(file)
     });
   }
 
+  for (const key in sections) {
+    sections[key].forEach(file => {
+      var cleanFileName = cleanUpFileName(file.name)
+      outputString = outputString.replace(`[ICON_${cleanFileName}]`, addIcon(file))
+    });
+  }
+
   outputString += '\n'
 
   let outputFilePath = path.join(config.outputDir, 'index.md')
+
+  mkdirpSync(config.outputDir)
 
   fs.writeFileSync(outputFilePath, outputString)
 }
@@ -37,10 +50,68 @@ const getContainingFolder = (file) => {
 }
 
 const buildCard = (file) => {
-  const filePath = getFilePath(file)
-  const fileName = file.name
+  var contents = generateMarkdownFile(file)
+  var icon = ""
 
-  return `- [${cleanUpFileName(fileName)}](./${filePath})\n`
+  if (file.icon) {
+    file.icon = file.icon.replace('res://', '')
+
+    let iconPath = path.dirname(file.icon).split(path.sep)
+    let iconBaseName = path.basename(file.icon)
+    let iconPathArray = []
+
+    for (let index = 0; index < iconPath.length; index++) {
+      const element = iconPath[index]
+      if (!config.projectDir.split(path.sep).includes(element)) {
+        iconPathArray.push(element)
+      }
+    }
+
+    icon = `![icon](${path.join(
+      iconPathArray.join(path.sep),
+      iconBaseName
+    )})`
+  }
+
+  var cleanFileName = cleanUpFileName(file.name)
+
+  return `## [ICON_${cleanFileName}] ${cleanFileName}\n${contents}`
+}
+
+const addIcon = (file) => {
+  if (file.icon) {
+    file.icon = file.icon.replace('res://', '')
+
+    let iconPath = path.dirname(file.icon).split(path.sep)
+    let iconBaseName = path.basename(file.icon)
+    let iconPathArray = []
+
+    for (let index = 0; index < iconPath.length; index++) {
+      const element = iconPath[index]
+      if (!config.projectDir.split(path.sep).includes(element)) {
+        iconPathArray.push(element)
+      }
+    }
+    
+    const icon_text = `![icon](${path.join(
+      iconPathArray.join(path.sep),
+      iconBaseName
+      )})`
+    
+    const cleanFileName = cleanUpFileName(file.name)
+    icon_store[cleanFileName] = icon_text
+
+    return icon_text
+  } else if (file.name.includes("extends")) {
+    const splitString  = file.name.split("extends")
+    const extention = splitString[1].trim()
+    const icon_text = icon_store[extention]
+    if (icon_text) {
+      return icon_text
+    }
+  }
+
+  return ""
 }
 
 const cleanUpFileName = (fileName) => {

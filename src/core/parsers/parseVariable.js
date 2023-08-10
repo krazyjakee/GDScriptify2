@@ -77,16 +77,16 @@ module.exports = (section, lines, index) => {
     }
   }
 
-  if (line.match(regex.variable.setget)) {
-    let setget = line.match(regex.variable.setget)[1].trim()
-
-    let setter = setget.split(',')[0]
+  if (line.match(regex.variable.set)) {
+    let setter = line.match(regex.variable.set)[1].trim()
     if (setter) {
       setter = setter.trim()
       row.setter = setter
     }
+  }
 
-    let getter = setget.split(',')[1]
+  if (line.match(regex.variable.get)) {
+    let getter = line.match(regex.variable.get)[1].trim()
     if (getter) {
       getter = getter.trim()
       row.getter = getter

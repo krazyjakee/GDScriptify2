@@ -1,12 +1,11 @@
 const config = require('../config')
 const fs = require('fs')
-const mkdirpSync = require('../utils/mkdirpSync')
 const path = require('path')
 
 module.exports = file => {
   let outputString = ''
 
-  outputString += `# ${file.name}\n\n`
+  outputString += file.name.includes("extends") ? `* ${file.name}\n\n` : ""
 
   if (config.readme) {
     if (file.godotVersion) {
@@ -54,20 +53,20 @@ module.exports = file => {
       }
     }
 
-    outputString += `**Icon**: ![icon](/${path.join(
+    outputString += `**Icon**: ![icon](${path.join(
       iconPathArray.join(path.sep),
       iconBaseName
     )})\n\n`
   }
 
   if (!Object.values(file.sections).every(section => section.length === 0)) {
-    outputString += `## Table of contents\n\n`
+    outputString += `### Table of contents\n\n`
 
     for (key in file.sections) {
       const section = file.sections[key]
 
       if (section.length) {
-        outputString += `### ${key[0].toUpperCase() + key.substring(1)}\n\n`
+        outputString += `#### ${key[0].toUpperCase() + key.substring(1)}\n\n`
 
         outputString += `|Name|Type|Default|\n|:-|:-|:-|\n`
 
@@ -97,10 +96,10 @@ module.exports = file => {
     const section = file.sections[key]
 
     if (section.length) {
-      outputString += `## ${key[0].toUpperCase() + key.substring(1)}\n\n`
+      outputString += `### ${key[0].toUpperCase() + key.substring(1)}\n\n`
 
       section.forEach(item => {
-        outputString += `### ${item.name}\n\n`
+        outputString += `#### ${item.name}\n\n`
         outputString += `\`\`\`gdscript\n${item.code}\n\`\`\`\n\n`
         outputString += `${item.description}\n\n`
 
@@ -131,7 +130,7 @@ module.exports = file => {
 
             if (index === 0) {
               if (row.title) {
-                outputString += `#### ${row.title}\n\n`
+                outputString += `##### ${row.title}\n\n`
               }
 
               outputString += `${tableHeader}\n`
@@ -154,16 +153,16 @@ module.exports = file => {
 
   if (config.readme) {
     if (fs.existsSync(path.join(config.projectDir, 'CHANGELOG.md'))) {
-      outputString += '## 🗒️ Changelog\n\nSee [CHANGELOG](/CHANGELOG.md).\n\n'
+      outputString += '### 🗒️ Changelog\n\nSee [CHANGELOG](/CHANGELOG.md).\n\n'
     }
 
     if (file.author) {
       let authors = file.author.split(',')
 
       if (authors.length === 1) {
-        outputString += `## 👤 Author\n\n- ${file.author}\n\n`
+        outputString += `### 👤 Author\n\n- ${file.author}\n\n`
       } else {
-        outputString += '## 👥 Authors\n\n'
+        outputString += '### 👥 Authors\n\n'
 
         for (let index = 0; index < authors.length; index++) {
           const author = authors[index]
@@ -174,14 +173,14 @@ module.exports = file => {
     }
 
     if (file.repository) {
-      outputString += `## 🤝 Contributing\n\n`
+      outputString += `### 🤝 Contributing\n\n`
       outputString += `Feel free to:\n\n`
       outputString += `- [Open an issue](${file.repository}/issues) if you find a bug.\n`
       outputString += `- [Create a pull request](${file.repository}/pulls) if you have a new cool feature to add to the project.\n\n`
     }
 
     if (file.support) {
-      outputString += '## 🙌 Supporting this project\n\n'
+      outputString += '### 🙌 Supporting this project\n\n'
       outputString +=
         'If you find this project helpful, please consider supporting it through any size donations to help make it better.\n\n'
 
@@ -223,7 +222,7 @@ module.exports = file => {
       outputString += 'Thank you very much!\n\n'
     }
 
-    outputString += '## 📝 Licenses\n\n'
+    outputString += '### 📝 Licenses\n\n'
 
     if (fs.existsSync(path.join(config.projectDir, 'LICENSE'))) {
       if (file.license) {
@@ -236,23 +235,5 @@ module.exports = file => {
     outputString += `- Documentation ([GDScriptify](https://github.com/krazyjakee/GDScriptify2)): [MIT License](/LICENSE_GDSCRIPTIFY.txt).\n\n`
   }
 
-  let outputFileName = config.readme
-    ? 'README.md'
-    : `${file.path
-        .split(path.sep)
-        .join(path.sep)
-        .split(/\s|-/)
-        .join('_')
-        .replace('.gd', '')}.md`
-
-  if (config.readme) {
-    config.outputDir = config.projectDir
-  }
-
-  let outputFilePath = path.join(config.outputDir, outputFileName)
-  let outputDir = path.dirname(outputFilePath)
-
-  mkdirpSync(outputDir)
-
-  fs.writeFileSync(outputFilePath, outputString)
+  return outputString;
 }
